@@ -45,7 +45,7 @@
 #include "httpd.h"
 #include "common.h"
 
-#define LOGIN_TIMEOUT		60
+#define LOGIN_TIMEOUT		30
 #define SERVER_NAME		"httpd"
 #define SERVER_PORT		80
 #define SERVER_PORT_SSL		443
@@ -888,6 +888,10 @@ handle_request(FILE *conn_fp, const conn_item_t *item)
 			cp = cur + 15;
 			cp += strspn( cp, " \t" );
 			clen = strtoul( cp, NULL, 0 );
+			if ((clen < 0) || (clen > 50000000)) {
+				send_error( 400, "Bad Request", NULL, "Content length invalid.", conn_fp);
+				return;
+			}
 		}
 		else if (strncasecmp( cur, "If-Modified-Since:", 18) == 0) {
 			cp = cur + 18;

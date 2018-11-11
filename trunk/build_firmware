@@ -1,5 +1,14 @@
 #!/bin/sh
 
+[ -z "$1" ] && echo "Please run '$0 PRODUCT_NAME' to start build (see 'configs/templates/') " && exit 1 
+
+if [ ! -f configs/templates/$1.config ] ; then
+	echo "configs/templates/$1.config not found "
+	exit 1
+fi
+
+cp -f configs/templates/$1.config .config
+
 ROOTDIR=`pwd`
 export ROOTDIR=$ROOTDIR
 
@@ -145,6 +154,11 @@ rm -rf "$dir_wifi_dst/mt7610"
 rm -rf "$dir_wifi_dst/mt76x2"
 rm -rf "$dir_wifi_dst/mt76x3"
 rm -rf "$dir_wifi_dst/mt7628"
+rm -rf "$dir_wifi_dst/mt7615"
+mkdir -p "$dir_wifi_dst/mt7615/embedded/tools/plug_in"
+cp -f "$dir_wifi_src/rtpci/4.4.2.1/mt7615/embedded/Kconfig" "$dir_wifi_dst/mt7615/embedded/Kconfig"
+cp -f "$dir_wifi_src/rtpci/4.4.2.1/mt7615/embedded/tools/plug_in/Makefile" "$dir_wifi_dst/mt7615/embedded/tools/plug_in/Makefile"
+
 if [ -n "$CONFIG_RT2860V2_AP" ] ; then
 	dir_wifi_ver="2.7.X.X"
 	if [ "$CONFIG_RALINK_RT3883" = "y" ] && [ "$CONFIG_FIRMWARE_WIFI5_DRIVER" = "2.4" ] ; then
@@ -212,6 +226,11 @@ if [ -n "$CONFIG_MT7628_AP" ] ; then
 	cp -rfL "$dir_wifi_src/rtsoc/$dir_wifi_ver/mt7628" "$dir_wifi_dst/"
 	cp -rfL "$dir_wifi_src/rtsoc/$dir_wifi_ver/mt7628_ap" "$dir_wifi_dst/"
 fi
+if [ -n "$CONFIG_MT7615_AP" ] ; then
+	dir_wifi_ver="4.4.2.1"
+	cp -rfL "$dir_wifi_src/rtpci/$dir_wifi_ver/mt7615" "$dir_wifi_dst/"
+	cp -rfL "$dir_wifi_src/rtpci/$dir_wifi_ver/mt7615_ap" "$dir_wifi_dst/"
+fi
 ############################ HWNAT ####################################
 dir_ppe_src="$ROOTDIR/proprietary/rt_ppe"
 dir_ppe_dst="$ROOTDIR/$CONFIG_LINUXDIR/net/nat"
@@ -275,6 +294,12 @@ if [ "$CONFIG_FIRMWARE_ENABLE_IPV6" != "y" ] ; then
 	func_enable_busybox_param "CONFIG_FEATURE_IP_ADDRESS"
 	func_enable_busybox_param "CONFIG_FEATURE_IP_LINK"
 	func_enable_busybox_param "CONFIG_FEATURE_IP_ROUTE"
+fi
+############################# SFE ####################################
+if [ "$CONFIG_FIRMWARE_INCLUDE_SFE" = "y" ] ; then
+	func_enable_kernel_param "CONFIG_SHORTCUT_FE"
+else
+	func_disable_kernel_param "CONFIG_SHORTCUT_FE"
 fi
 ############################# USB #####################################
 if [ "$CONFIG_FIRMWARE_ENABLE_USB" != "y" ] || [ -z "$CONFIG_USB_SUPPORT" ] ; then

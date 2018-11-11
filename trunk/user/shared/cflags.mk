@@ -21,6 +21,7 @@ CFLAGS += $(if $(CONFIG_MT7628_AP),-DUSE_MT7628_AP,)
 CFLAGS += $(if $(CONFIG_RT3352_INIC_MII),-DUSE_RT3352_MII,)
 CFLAGS += $(if $(CONFIG_RT_WSC),-DUSE_WSC_WPS,)
 CFLAGS += $(if $(CONFIG_RT_IGMP_SNOOP),-DUSE_IGMP_SNOOP,)
+CFLAGS += $(if $(CONFIG_IGMP_SNOOP_SUPPORT),-DUSE_IGMP_SNOOP,)
 CFLAGS += $(if $(CONFIG_RA_HW_NAT),-DUSE_HW_NAT,)
 CFLAGS += $(if $(CONFIG_RA_HW_NAT_IPV6),-DUSE_IPV6_HW_NAT,)
 CFLAGS += $(if $(CONFIG_RA_HW_NAT_PCI),-DUSE_WWAN_HW_NAT,)
@@ -92,6 +93,13 @@ CFLAGS += -DUSE_WID_5G=$(CONFIG_RT_SECOND_CARD)
 endif
 endif
 
+ifdef CONFIG_RT_FIRST_IF_MT7615E
+CFLAGS += -DUSE_MT7615_AP
+endif
+
+ifdef CONFIG_RT_SECOND_IF_MT7615E
+CFLAGS += -DUSE_MT7615_AP
+endif
 ##################################################################
 # Project .config related params
 ##################################################################
@@ -188,4 +196,8 @@ endif
 
 ifeq ($(CONFIG_FIRMWARE_INCLUDE_HTTPS),y)
 CFLAGS += -DSUPPORT_HTTPS
+endif
+
+ifeq ($(CONFIG_FIRMWARE_INCLUDE_SFE),y)
+CFLAGS += -DUSE_SFE
 endif

@@ -34,7 +34,7 @@ struct nvram_pair router_defaults[] = {
 
 	/* Miscellaneous parameters */
 	{ "time_zone", DEF_TIMEZONE },
-	{ "log_float_ui", "1" },		/* WebUI syslog float panel mode */
+	{ "log_float_ui", "0" },		/* WebUI syslog float panel mode */
 	{ "log_ipaddr", "" },			/* syslog recipient IP */
 	{ "log_port", "514" },			/* syslog recipient Port */
 	{ "log_level", "0" },			/* Bitmask 0:off 1:denied 2:accepted */
@@ -198,7 +198,7 @@ struct nvram_pair router_defaults[] = {
 #else
 	{ "wl_HT_BW", "1" },
 #endif
-	{ "wl_txbf", "0" },
+	{ "wl_txbf", "1" },
 	{ "wl_ssid2",  DEF_WLAN_5G_SSID },
 	{ "wl_mode_x", "0" },
 	{ "wl_wdsapply_x", "0" },
@@ -239,6 +239,11 @@ struct nvram_pair router_defaults[] = {
 	{ "wl_guest_wpa_psk", "" },
 	{ "wl_guest_macrule", "0" },
 	{ "wl_guest_mcs_mode", "0" },
+
+#if defined(USE_MT7615_AP)
+	{ "wl_band_steering", "0" },
+	{ "wl_mumimo", "1" },
+#endif
 
 	// ApCli 5Ghz
 	{ "wl_sta_ssid", "" },
@@ -331,6 +336,11 @@ struct nvram_pair router_defaults[] = {
 	{ "rt_guest_macrule", "0" },
 	{ "rt_guest_mcs_mode", "0" },
 
+#if defined(USE_MT7615_AP)
+	{ "rt_turbo_qam", "1" },
+	{ "rt_airtimefairness", "1" },
+#endif
+
 	// ApCli 2.4Ghz
 	{ "rt_sta_ssid", "" },
 	{ "rt_sta_auth_mode", "open" },
@@ -343,8 +353,8 @@ struct nvram_pair router_defaults[] = {
 	// USB related
 	{ "acc_num", "0" },
 	{ "enable_ftp", "0" },
-	{ "enable_samba", "1" },
-	{ "st_samba_fp", "1" },
+	{ "enable_samba", "0" },
+	{ "st_samba_fp", "0" },
 	{ "st_samba_mode", "1" },
 	{ "st_samba_lmb", "1" },
 	{ "st_samba_workgroup", DEF_SMB_WORKGROUP },
@@ -511,7 +521,7 @@ struct nvram_pair router_defaults[] = {
 	{ "ddns2_ssl", "1" },
 	{ "asusddns_tos_agreement", "0" },
 
-	{ "preferred_lang", "" },
+	{ "preferred_lang", "CN" },
 
 	{ "modem_rule", "0" },
 	{ "modem_prio", "1" },
@@ -548,21 +558,21 @@ struct nvram_pair router_defaults[] = {
 	{ "controlrate_broadcast", "10" },
 
 	{ "di_poll_mode", "0" },
-	{ "di_timeout", "3" },
-	{ "di_time_done", "55" },
+	{ "di_timeout", "2" },
+	{ "di_time_done", "30" },
 	{ "di_time_fail", "5" },
 	{ "di_lost_delay", "10" },
 	{ "di_lost_action", "0" },
 	{ "di_recon_pause", "0" },
-	{ "di_addr0", "77.88.8.8" },
-	{ "di_addr1", "8.8.8.8" },
-	{ "di_addr2", "208.67.222.222" },
-	{ "di_addr3", "77.88.8.1" },
+	{ "di_addr0", "114.114.114.114" },
+	{ "di_addr1", "208.67.222.222" },
+	{ "di_addr2", "14.17.42.40" },
+	{ "di_addr3", "8.8.8.8" },
 	{ "di_addr4", "8.8.4.4" },
 	{ "di_addr5", "208.67.220.220" },
 	{ "di_port0", "53" },
 	{ "di_port1", "53" },
-	{ "di_port2", "53" },
+	{ "di_port2", "80" },
 	{ "di_port3", "53" },
 	{ "di_port4", "53" },
 	{ "di_port5", "53" },
@@ -576,11 +586,11 @@ struct nvram_pair router_defaults[] = {
 #endif
 
 	{ "telnetd", "1" },
-	{ "sshd_enable", "0" },
+	{ "sshd_enable", "1" },
 	{ "wins_enable", "0" },
 	{ "lltd_enable", "1" },
 	{ "adsc_enable", "0" },
-	{ "crond_enable", "0" },
+	{ "crond_enable", "1" },
 	{ "crond_log", "0" },
 
 #if defined(BOARD_N65U)
@@ -603,7 +613,7 @@ struct nvram_pair router_defaults[] = {
 	{ "fn2_action_short", "0" },
 	{ "fn2_action_long", "0" },
 #endif
-	{ "watchdog_cpu", "0" },
+	{ "watchdog_cpu", "1" },
 	{ "front_led_all", "1" },
 	{ "front_led_wan", "2" },
 	{ "front_led_lan", "1" },
@@ -655,6 +665,7 @@ struct nvram_pair router_defaults[] = {
 	{ "hw_nat_mode", "1" },
 #endif
 	{ "sw_nat_mode", "0" },
+	{ "sfe_enable", "0" },
 	{ "fw_syn_cook", "0" },
 	{ "fw_mac_drop", "0" },
 	{ "nf_nat_type", "2" },

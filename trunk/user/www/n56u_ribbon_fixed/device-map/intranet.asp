@@ -89,11 +89,11 @@ function update_lanip(){
     <td><span id="LANType"></span></td>
   </tr>
   <tr>
-    <th><#IP4_Addr#> LAN:</th>
+    <th><#IP4_Addr#>:</th>
     <td><span id="LANIP4"></span></td>
   </tr>
   <tr>
-    <th><#Gateway#> LAN:</th>
+    <th><#Gateway#>:</th>
     <td><span id="LANGW4"></span></td>
   </tr>
   <tr>

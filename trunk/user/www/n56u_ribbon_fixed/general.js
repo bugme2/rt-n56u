@@ -407,6 +407,8 @@ function is_string2(o,e) {
 function validate_ssidchar(ch) {
     if (ch >= 32 && ch <= 126)
         return true;
+	if (ch >= 0x4e00 && ch <= 0x9fa5)
+		return true;
     return false;
 }
 
@@ -585,7 +587,7 @@ function validate_ipaddr_final(o, v) {
                 document.form.wan_netmask.value = "255.0.0.0";
             }
             else if (v == 'lan_ipaddr') {
-                document.form.lan_ipaddr.value = "192.168.1.1";
+                document.form.lan_ipaddr.value = "192.168.2.1";
                 document.form.lan_netmask.value = "255.255.255.0";
             }
             o.focus();
