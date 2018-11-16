@@ -2076,7 +2076,7 @@ static VOID CmdExtStaRecUpdateRsp(struct cmd_msg *msg, char *Data, UINT16 Len)
 
 	if (EventExtCmdResult->u4Status != 0)
 	{
-		MTWF_LOG(DBG_CAT_FW, DBG_SUBCAT_ALL, DBG_LVL_ERROR,
+		MTWF_LOG(DBG_CAT_FW, DBG_SUBCAT_ALL, DBG_LVL_INFO,
             ("%s::ERROR::EventExtCmdResult.u4Status = 0x%x\n",
             __FUNCTION__, EventExtCmdResult->u4Status));
 		
@@ -3137,9 +3137,7 @@ static VOID bssUpdateBmcMngRate(
     CmdBssInfoBmcRate.u2Length = sizeof(CMD_BSSINFO_BMC_RATE_T);
 
     MTWF_LOG(DBG_CAT_FW, DBG_SUBCAT_ALL, DBG_LVL_OFF,
-            ("%s (BSS_INFO_BROADCAST_INFO), \
-                CmdBssInfoBmcRate.u2BcTransmit= %d, \
-                CmdBssInfoBmcRate.u2McTransmit = %d\n",
+            ("%s (BSS_INFO_BROADCAST_INFO), CmdBssInfoBmcRate.u2BcTransmit= %d, CmdBssInfoBmcRate.u2McTransmit = %d\n",
                 __FUNCTION__,
                 le2cpu16(CmdBssInfoBmcRate.u2BcTransmit),
                 le2cpu16(CmdBssInfoBmcRate.u2McTransmit)));
