@@ -155,9 +155,8 @@ rm -rf "$dir_wifi_dst/mt76x2"
 rm -rf "$dir_wifi_dst/mt76x3"
 rm -rf "$dir_wifi_dst/mt7628"
 rm -rf "$dir_wifi_dst/mt7615"
-mkdir -p "$dir_wifi_dst/mt7615/embedded/tools/plug_in"
+mkdir -p "$dir_wifi_dst/mt7615/embedded"
 cp -f "$dir_wifi_src/rtpci/4.4.2.1/mt7615/embedded/Kconfig" "$dir_wifi_dst/mt7615/embedded/Kconfig"
-cp -f "$dir_wifi_src/rtpci/4.4.2.1/mt7615/embedded/tools/plug_in/Makefile" "$dir_wifi_dst/mt7615/embedded/tools/plug_in/Makefile"
 
 if [ -n "$CONFIG_RT2860V2_AP" ] ; then
 	dir_wifi_ver="2.7.X.X"

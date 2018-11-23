@@ -2325,11 +2325,13 @@ BOOLEAN RTMPCheckStrPrintAble(
 
     for (i=0; i<strLen; i++)
     {
-        if ((pInPutStr[i] < 0x20) || (pInPutStr[i] > 0x7E))
+        if ((pInPutStr[i] > 0x20) || (pInPutStr[i] < 0x7E))
+            return TRUE;
+        if ((pInPutStr[i] > 0x4E00) || (pInPutStr[i] < 0x9FA5))
             return TRUE;
     }
 
-    return TRUE;
+    return FALSE;
 }
 
 
