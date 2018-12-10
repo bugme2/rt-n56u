@@ -1860,6 +1860,8 @@ BOOLEAN RTMPCheckStrPrintAble(
     {
         if ((pInPutStr[i] < 0x20) || (pInPutStr[i] > 0x7E))
             return FALSE;
+        if ((pInPutStr[i] < 0x4E00) || (pInPutStr[i] > 0x9FA5))
+            return FALSE;
     }
     
     return TRUE;
