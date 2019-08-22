@@ -1699,6 +1699,29 @@ ip6t_mangle_rules(char *man_if)
 	if (is_module_loaded("ip6table_mangle"))
 		doSystem("ip6tables-restore %s", ipt_file);
 }
+
+#if defined (APP_NAPT66)
+static void
+ip6t_disable_filter(void)
+{
+	FILE *fp;
+	const char *ipt_file = "/tmp/ip6t_disable_filter.rules";
+
+	if (!(fp=fopen(ipt_file, "w")))
+		return;
+
+	fprintf(fp, "*%s\n", "filter");
+	fprintf(fp, ":%s %s [0:0]\n", "INPUT", "ACCEPT");
+	fprintf(fp, ":%s %s [0:0]\n", "FORWARD", "ACCEPT");
+	fprintf(fp, ":%s %s [0:0]\n", "OUTPUT", "ACCEPT");
+	fprintf(fp, "-F\n");
+
+	fprintf(fp, "COMMIT\n\n");
+	fclose(fp);
+
+	doSystem("ip6tables-restore %s", ipt_file);
+}
+#endif
 #endif
 
 static int
@@ -2008,6 +2031,10 @@ ipt_nat_rules(char *man_if, char *man_ip,
 				if (ipv6_type == IPV6_6IN4 || ipv6_type == IPV6_6TO4 || ipv6_type == IPV6_6RD)
 					fprintf(fp, "-A %s -p %d -j RETURN\n", dtype, 41);
 			}
+#if defined (APP_NAPT66)
+	if (nvram_match("napt66_enable", "1"))
+		ip6t_disable_filter();
+#endif
 #endif
 #if defined (APP_TRMD)
 			/* skip DMZ for local Transmission */

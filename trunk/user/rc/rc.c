@@ -886,6 +886,19 @@ init_router(void)
 	start_rwfs_optware();
 
 	// system ready
+	system("sync && echo 3 > /proc/sys/vm/drop_caches");
+
+#if defined(APP_NAPT66)
+	start_napt66();
+#endif
+
+#if defined (BOARD_K2P)
+	system("echo 8 > /proc/irq/11/smp_affinity");
+	system("echo 8 > /proc/irq/12/smp_affinity");
+	system("echo 8 > /sys/class/net/ra0/queues/rx-0/rps_cpus");
+	system("echo 8 > /sys/class/net/eth2/queues/rx-0/rps_cpus");
+	system("echo 7 > /sys/class/net/$(nvram get wan0_ifname)/queues/rx-0/rps_cpus");
+#endif
 	system("/etc/storage/started_script.sh &");
 }
 

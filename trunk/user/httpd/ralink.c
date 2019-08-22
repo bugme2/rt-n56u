@@ -1451,8 +1451,8 @@ ej_wl_auth_list(int eid, webs_t wp, int argc, char **argv)
 
 #define SSURV_LINE_LEN		(4+33+20+23+9+7+7+3)		// Channel+SSID+Bssid+Security+Signal+WiressMode+ExtCh+NetworkType
 #define SSURV_LINE_LEN_WPS	(4+33+20+23+9+7+7+3+4+5)	// Channel+SSID+Bssid+Security+Signal+WiressMode+ExtCh+NetworkType+WPS+PIN
-#define SSURV_LINE_LEN_MT7615_WPS (4+4+67+20+23+9+9+7+3+4+5+7)	// No+Ch+SSID+BSSID+Security+Siganl+WiressMode+ExtCH+NetworkType+WPS+DPID+BcnRept
-#define SSURV_LINE_LEN_MT7615_4421 (4+4+33+20+23+9+9+7+3+8)	// No+Ch+SSID+BSSID+Security+Siganl+WiressMode+ExtCH+NetworkType+BcnRept
+#define SSURV_LINE_LEN_MT7615_WPS (4+4+33+20+23+9+9+7+3+8+4+5+8)	// No+Ch+SSID+BSSID+Security+Siganl+WiressMode+ExtCH+NetworkType+WPS+DPID+BcnRept
+#define SSURV_LINE_LEN_MT7615_5030 (4+4+33+20+23+9+9+7+3+8+8)	// No+Ch+SSID+BSSID+Security+Siganl+WiressMode+ExtCH+NetworkType+BcnRept
 
 #if BOARD_HAS_5G_RADIO
 int
@@ -1465,7 +1465,7 @@ ej_wl_scan_5g(int eid, webs_t wp, int argc, char **argv)
 #if defined (USE_MT7615_AP) && defined (WITHOUT_KERNEL)
 	char site_line[SSURV_LINE_LEN_MT7615_WPS+1];
 #elif defined (USE_MT7615_AP) && !defined (WITHOUT_KERNEL)
-	char site_line[SSURV_LINE_LEN_MT7615_4421+1];
+	char site_line[SSURV_LINE_LEN_MT7615_5030+1];
 #elif defined (USE_WSC_WPS) && !defined (USE_MT7615_AP)
 	char site_line[SSURV_LINE_LEN_WPS+1];
 #else
@@ -1508,7 +1508,7 @@ ej_wl_scan_5g(int eid, webs_t wp, int argc, char **argv)
 #if defined (USE_MT7615_AP) && defined (WITHOUT_KERNEL)
 	line_len = SSURV_LINE_LEN_MT7615_WPS;
 #elif defined (USE_MT7615_AP) && !defined (WITHOUT_KERNEL)
-	line_len = SSURV_LINE_LEN_MT7615_4421;
+	line_len = SSURV_LINE_LEN_MT7615_5030;
 #elif defined (USE_WSC_WPS) && !defined (USE_MT7615_AP)
 	line_len = SSURV_LINE_LEN_WPS;
 //	dbg("%-4s%-33s%-20s%-23s%-9s%-7s%-7s%-3s%-4s%-5s\n", "Ch", "SSID", "BSSID", "Security", "Signal(%)", "W-Mode", " ExtCH", "NT", "WPS", "DPID");
@@ -1587,7 +1587,7 @@ ej_wl_scan_2g(int eid, webs_t wp, int argc, char **argv)
 #if defined (USE_MT7615_AP) && defined (WITHOUT_KERNEL)
 	char site_line[SSURV_LINE_LEN_MT7615_WPS+1];
 #elif defined (USE_MT7615_AP) && !defined (WITHOUT_KERNEL)
-	char site_line[SSURV_LINE_LEN_MT7615_4421+1];
+	char site_line[SSURV_LINE_LEN_MT7615_5030+1];
 #elif (defined (USE_WSC_WPS) || defined(USE_RT3352_MII)) && !defined (USE_MT7615_AP)
 	char site_line[SSURV_LINE_LEN_WPS+1];
 #else
@@ -1630,7 +1630,7 @@ ej_wl_scan_2g(int eid, webs_t wp, int argc, char **argv)
 #if defined (USE_MT7615_AP) && defined (WITHOUT_KERNEL)
 	line_len = SSURV_LINE_LEN_MT7615_WPS;
 #elif defined (USE_MT7615_AP) && !defined (WITHOUT_KERNEL)
-	line_len = SSURV_LINE_LEN_MT7615_4421;
+	line_len = SSURV_LINE_LEN_MT7615_5030;
 #elif (defined (USE_WSC_WPS) || defined(USE_RT3352_MII)) && !defined (USE_MT7615_AP)
 	line_len = SSURV_LINE_LEN_WPS;
 //	dbg("%-4s%-33s%-20s%-23s%-9s%-7s%-7s%-3s%-4s%-5s\n", "Ch", "SSID", "BSSID", "Security", "Signal(%)", "W-Mode", " ExtCH", "NT", "WPS", "DPID");

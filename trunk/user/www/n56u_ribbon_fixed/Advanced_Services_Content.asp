@@ -29,6 +29,7 @@ $j(document).ready(function() {
 	init_itoggle('lltd_enable');
 	init_itoggle('adsc_enable');
 	init_itoggle('crond_enable', change_crond_enabled);
+	init_itoggle('napt66_enable');
 	init_itoggle('watchdog_cpu');
 	
 });
@@ -68,6 +69,10 @@ function initial(){
 		http_proto_change();
 	}
 	change_crond_enabled();
+	
+	if(!found_app_napt66()){
+		showhide_div('div_napt66', 0);
+	}
 }
 
 function applyRule(){
@@ -468,6 +473,22 @@ function change_crond_enabled(){
                                         <tr>
                                             <th colspan="2" style="background-color: #E3E3E3;"><#Adm_System_misc#></th>
                                         </tr>
+
+										<tr id="div_napt66">
+                                            <th><#Adm_Svc_napt66#></th>
+                                            <td>
+                                                <div class="main_itoggle">
+                                                    <div id="napt66_enable_on_of">
+                                                        <input type="checkbox" id="napt66_enable_fake" <% nvram_match_x("", "napt66_enable", "1", "value=1 checked"); %><% nvram_match_x("", "napt66_enable", "0", "value=0"); %>>
+                                                    </div>
+                                                </div>
+                                                <div style="position: absolute; margin-left: -10000px;">
+                                                    <input type="radio" name="napt66_enable" id="napt66_enable_1" class="input" value="1" <% nvram_match_x("", "napt66_enable", "1", "checked"); %>/><#checkbox_Yes#>
+                                                    <input type="radio" name="napt66_enable" id="napt66_enable_0" class="input" value="0" <% nvram_match_x("", "napt66_enable", "0", "checked"); %>/><#checkbox_No#>
+                                                </div>
+                                            </td>
+                                        </tr>
+
                                         <tr>
                                             <th><#Adm_Svc_lltd#></th>
                                             <td>

@@ -212,6 +212,7 @@ Adm_System_logf=启用日志浮动工具栏:
 Adm_System_logf_item2=最近100行
 Adm_Svc_desc=各种系统服务控制。
 Adm_Svc_wins=启用 WINS 服务
+Adm_Svc_napt66=启用napt66(重启后生效)
 Adm_Svc_lltd=链接层拓扑发现 (LLTD)
 Adm_Svc_adsc=ASUS信息发现服务
 Adm_Svc_crond=Cron守护程序 (计划任务)

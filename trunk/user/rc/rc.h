@@ -513,6 +513,10 @@ void stop_services(int stopall);
 void stop_services_lan_wan(void);
 void stop_misc(void);
 
+#if defined(APP_NAPT66)
+void start_napt66(void);
+#endif
+
 /* services_ex.c */
 int fill_dnsmasq_servers(void);
 int is_dns_dhcpd_run(void);
