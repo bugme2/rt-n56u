@@ -663,12 +663,16 @@ struct nvram_pair router_defaults[] = {
 #endif
 
 #if defined(CONFIG_RALINK_MT7621) || (defined(CONFIG_RALINK_MT7620) && !defined(BOARD_N14U))
-	{ "hw_nat_mode", "4" },
+#if defined(USE_MT7615_AP) // hwnat is disabled by default
+	{ "hw_nat_mode", "2" },
+#else
+	{ "hw_nat_mode", "1" },
+#endif
 #else
 	{ "hw_nat_mode", "1" },
 #endif
 	{ "sw_nat_mode", "0" },
-	{ "sfe_enable", "0" },
+	{ "sfe_enable", "2" },
 	{ "fw_syn_cook", "0" },
 	{ "fw_mac_drop", "0" },
 	{ "nf_nat_type", "2" },
