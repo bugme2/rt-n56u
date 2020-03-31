@@ -1518,7 +1518,7 @@ main(int argc, char **argv)
 	}
 
 	if (!strcmp(base, "reboot")) {
-		return sys_exit();
+		system("/bin/mtd_write -r unlock mtd1");
 	}
 
 	if (!strcmp(base, "shutdown") || !strcmp(base, "halt")) {
