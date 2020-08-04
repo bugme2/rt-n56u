@@ -89,6 +89,7 @@ dir_y						+= www
 dir_y						+= rc
 dir_y						+= infosvr
 dir_y						+= inadyn
+dir_$(CONFIG_FIRMWARE_INCLUDE_NAPT66)		+= napt66
 dir_y						+= miniupnpd
 dir_y						+= dnsmasq
 dir_y						+= igmpproxy

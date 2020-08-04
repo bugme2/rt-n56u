@@ -867,6 +867,10 @@ init_router(void)
 
 	start_rwfs_optware();
 
+#if defined(APP_NAPT66)
+	start_napt66();
+#endif
+
 	// system ready
 	system("/etc/storage/started_script.sh &");
 }

@@ -32,9 +32,14 @@ struct nvram_pair router_defaults[] = {
 	{ "mtd_rwfs_mount", "0" },		/* Allow mount MTD RWFS partition on boot */
 #endif
 
+#if defined(APP_NAPT66)
+	/* NAPT66 */
+	{ "napt66_enable", "0" },
+#endif
+
 	/* Miscellaneous parameters */
 	{ "time_zone", DEF_TIMEZONE },
-	{ "log_float_ui", "1" },		/* WebUI syslog float panel mode */
+	{ "log_float_ui", "0" },		/* WebUI syslog float panel mode */
 	{ "log_ipaddr", "" },			/* syslog recipient IP */
 	{ "log_port", "514" },			/* syslog recipient Port */
 	{ "log_level", "0" },			/* Bitmask 0:off 1:denied 2:accepted */
@@ -343,7 +348,7 @@ struct nvram_pair router_defaults[] = {
 	// USB related
 	{ "acc_num", "0" },
 	{ "enable_ftp", "0" },
-	{ "enable_samba", "1" },
+	{ "enable_samba", "0" },
 	{ "st_samba_fp", "1" },
 	{ "st_samba_mode", "1" },
 	{ "st_samba_lmb", "1" },
@@ -359,11 +364,11 @@ struct nvram_pair router_defaults[] = {
 	{ "sh_num", "0" },
 	{ "computer_name", BOARD_NAME },
 	{ "pcache_reclaim", "2" },
-	{ "usb3_disable", "0" },
+	{ "usb3_disable", "1" },
 	{ "u2ec_enable", "1" },
 	{ "lprd_enable", "1" },
 	{ "rawd_enable", "1" },
-	{ "achk_enable", "0" },
+	{ "achk_enable", "1" },
 	{ "nfsd_enable", "0" },
 	{ "optw_enable", "0" },
 	{ "dlna_disc", "895" },
@@ -576,7 +581,7 @@ struct nvram_pair router_defaults[] = {
 #endif
 
 	{ "telnetd", "1" },
-	{ "sshd_enable", "0" },
+	{ "sshd_enable", "1" },
 	{ "wins_enable", "0" },
 	{ "lltd_enable", "1" },
 	{ "adsc_enable", "0" },
@@ -590,11 +595,7 @@ struct nvram_pair router_defaults[] = {
 	{ "wol_mac_last", "" },
 	{ "gw_arp_ping", "0" },
 	{ "ez_action_short", "0" },
-#if !defined(BOARD_GPIO_BTN_RESET)
 	{ "ez_action_long", "15" },	/* Reset */
-#else
-	{ "ez_action_long", "0" },
-#endif
 #if defined (BOARD_GPIO_BTN_FN1)
 	{ "fn1_action_short", "0" },
 	{ "fn1_action_long", "0" },

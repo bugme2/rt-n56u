@@ -1699,6 +1699,15 @@ ip6t_mangle_rules(char *man_if)
 	if (is_module_loaded("ip6table_mangle"))
 		doSystem("ip6tables-restore %s", ipt_file);
 }
+
+#if defined (APP_NAPT66)
+static void
+ip6t_disable_filter(void)
+{
+	doSystem("ip6tables -P FORWARD ACCEPT");
+	doSystem("ip6tables -F FORWARD");
+}
+#endif
 #endif
 
 static int
@@ -2166,6 +2175,10 @@ start_firewall_ex(void)
 
 	/* IPv6 Filter rules */
 	ip6t_filter_rules(man_if, wan_if, lan_if, logaccept, logdrop, i_tcp_mss);
+#if defined (APP_NAPT66)
+	if (nvram_match("napt66_enable", "1"))
+		ip6t_disable_filter();
+#endif
 #endif
 
 	if (check_if_file_exist(int_iptables_script))
