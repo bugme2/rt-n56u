@@ -398,7 +398,7 @@ function done_validating(action){
                                                     <option value="0" <% nvram_match_x("", "usb3_disable", "0", "selected"); %>><#checkbox_No#> (*)</option>
                                                     <option value="1" <% nvram_match_x("", "usb3_disable", "1", "selected"); %>><#checkbox_Yes#> (<#StorageU3Desc#>)</option>
                                                 </select>
-                                                &nbsp;<span style="color:#888">* need reboot</span>
+                                                &nbsp;<span style="color:#888">* <#needreboot#></span>
                                             </td>
                                         </tr>
                                         <tr id="row_spd">

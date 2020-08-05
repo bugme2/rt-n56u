@@ -275,7 +275,7 @@ function done_validating(action){
                                             <th><a class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this,4,1);"><#LANHostConfig_IPRouters_itemname#></a></th>
                                             <td>
                                                 <input type="text" id="lan_ipaddr" name="lan_ipaddr" value="<% nvram_get_x("", "lan_ipaddr"); %>" maxlength="15" class="input" size="15" onKeyPress="return is_ipaddr(this,event);" />
-                                                &nbsp;<span style="color:#888;">192.168.1.1</span>
+                                                &nbsp;<span style="color:#888;">192.168.2.1</span>
                                             </td>
                                         </tr>
                                         <tr>

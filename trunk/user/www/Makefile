@@ -39,6 +39,13 @@ ifeq ($(CONFIG_FIRMWARE_INCLUDE_LANG_CZ),y)
 	sed $(COPYR_PATTERN) -i $(ROMFS_DIR)/www/CZ.dict
 	sed $(DWURL_PATTERN) -i $(ROMFS_DIR)/www/CZ.dict
 endif
+ifeq ($(CONFIG_FIRMWARE_INCLUDE_LANG_CN),y)
+	echo "LANG_CN=简体中文" >> $(ROMFS_DIR)/www/EN.header
+	cp dict/CN.dict $(ROMFS_DIR)/www
+	sed $(BOARD_PATTERN) -i $(ROMFS_DIR)/www/CN.dict
+	sed $(COPYR_PATTERN) -i $(ROMFS_DIR)/www/CN.dict
+	sed $(DWURL_PATTERN) -i $(ROMFS_DIR)/www/CN.dict
+endif
 ifeq ($(CONFIG_FIRMWARE_INCLUDE_LANG_DA),y)
 	echo "LANG_DA=Dansk" >> $(ROMFS_DIR)/www/EN.header
 	cp dict/DA.dict $(ROMFS_DIR)/www
