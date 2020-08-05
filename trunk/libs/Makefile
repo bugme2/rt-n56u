@@ -114,7 +114,7 @@ dir_$(LIBS_INCLUDE_MEDIA)			+= libflac
 dir_$(LIBS_INCLUDE_MEDIA)			+= libsqlite
 
 # transmission shared libs
-dir_$(CONFIG_FIRMWARE_INCLUDE_TRANSMISSION)	+= libcurl
+dir_y						+= libcurl
 dir_$(CONFIG_FIRMWARE_INCLUDE_TRANSMISSION)	+= libevent
 
 # aria2 shared libs
