@@ -1,5 +1,12 @@
 #!/bin/sh
 
+if [ ! -f configs/templates/$1.config ] ; then
+	echo "configs/templates/$1.config not found "
+	exit 1
+fi
+
+cp -f configs/templates/$1.config .config
+
 ROOTDIR=`pwd`
 export ROOTDIR=$ROOTDIR
 
