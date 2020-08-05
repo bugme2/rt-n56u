@@ -23,147 +23,79 @@ func_start()
 	echo -n "Starting $SVC_NAME:."
 
 	if [ ! -d "${DIR_LINK}" ] ; then
-		echo "[FAILED]"
-		logger -t "$SVC_NAME" "Cannot start: unable to find target dir!"
-		return 1
+		mkdir -p "$DIR_LINK"
 	fi
 
-	DIR_CFG="${DIR_LINK}/config"
-	DIR_DL1="${DIR_LINK}/downloads"
+	for i in "a1" "a2" "a3" "a4" "b1" "b2" "b3" "b4" ; do
+		disk_path="/media/AiDisk_${i}"
+		if [ -d "${disk_path}" ] && grep -q ${disk_path} /proc/mounts ; then
+			DIR_DL1="${disk_path}/downloads"
+		fi
+	done
 
-	[ ! -d "$DIR_CFG" ] && mkdir -p "$DIR_CFG"
-
-	FILE_CONF="$DIR_CFG/aria2.conf"
-	FILE_LIST="$DIR_CFG/incomplete.lst"
-	FILE_WEB_CONF="$DIR_CFG/configuration.js"
+	FILE_CONF_storage="/etc/storage/aria2.conf"
+	FILE_CONF="$DIR_LINK/aria2.conf"
+	FILE_LIST="$DIR_LINK/incomplete.lst"
 
 	touch "$FILE_LIST"
 
 	aria_pport=`nvram get aria_pport`
 	aria_rport=`nvram get aria_rport`
-	aria_user=`nvram get http_username`
-	aria_pass=`nvram get http_passwd`
-	lan_ipaddr=`nvram get lan_ipaddr_t`
 
 	[ -z "$aria_rport" ] && aria_rport="6800"
 	[ -z "$aria_pport" ] && aria_pport="16888"
 
-	if [ ! -f "$FILE_CONF" ] ; then
+	if [ ! -f "$FILE_CONF_storage" ] ; then
 		[ ! -d "$DIR_DL1" ] && mkdir -p "$DIR_DL1"
 		chmod -R 777 "$DIR_DL1"
-		cat > "$FILE_CONF" <<EOF
-
-### XML-RPC
-rpc-listen-all=true
-#rpc-secret=
-rpc-user=$aria_user
-rpc-passwd=$aria_pass
-
-### Common
+		cat > "$FILE_CONF_storage" <<EOF
 dir=$DIR_DL1
-max-download-limit=0
-max-overall-download-limit=6M
+file-allocation=none
+continue=true
+split=8
+max-concurrent-downloads=3
+max-connection-per-server=8
+content-disposition-default-utf8=true
+enable-rpc=true
 disable-ipv6=true
-
-### File
-file-allocation=trunc
-#file-allocation=falloc
-#file-allocation=none
-no-file-allocation-limit=10M
-allow-overwrite=false
-auto-file-renaming=true
-
-### Bittorent
-bt-enable-lpd=false
-#bt-lpd-interface=eth2.2
-bt-max-peers=50
-bt-max-open-files=100
-bt-request-peer-speed-limit=100K
-bt-stop-timeout=0
+rpc-listen-all=true
+rpc-allow-origin-all=true
+follow-torrent=true
 enable-dht=true
-#enable-dht6=false
+enable-dht6=false
+seed-time=0
+bt-max-peers=0
+bt-enable-lpd=true
+bt-remove-unselected-file=true
 enable-peer-exchange=true
-seed-ratio=1.5
-#seed-time=60
-max-upload-limit=0
-max-overall-upload-limit=5M
-
-### FTP/HTTP
-ftp-pasv=true
-ftp-type=binary
-timeout=120
-connect-timeout=60
-split=5
-max-concurrent-downloads=5
-max-connection-per-server=1
-min-split-size=20M
-
-### Log
-log=$DIR_CFG/aria2.log
-log-level=notice
-
+optimize-concurrent-downloads=true
+peer-id-prefix=-TR2930-
+peer-agent=Transmission/2.93
+bt-seed-unverified=true
+allow-overwrite=true
 EOF
 	fi
 
-	if [ ! -f "$FILE_WEB_CONF" ] ; then
-		cat > "$FILE_WEB_CONF" <<EOF
-angular
-.module('webui.services.configuration',  [])
-.constant('\$name', 'Aria2 WebUI')
-.constant('\$titlePattern', 'DL: {download_speed} - UL: {upload_speed}')
-.constant('\$pageSize', 11)
-.constant('\$authconf', {
-  host: '$lan_ipaddr',
-  path: '/jsonrpc',
-  port: '$aria_rport',
-  encrypt: false,
-  auth: {
-  //token: 'admin',
-  user: '$aria_user',
-  pass: '$aria_pass',
-  },
-  directURL: ''
-})
-.constant('\$enable', {
-  torrent: true,
-  metalink: true,
-  sidebar: {
-    show: true,
-    stats: true,
-    filters: true,
-    starredProps: true,
-  }
-})
-.constant('\$starredProps', [
-  'dir', 'auto-file-renaming', 'max-connection-per-server'
-])
-.constant('\$downloadProps', [
-  'pause', 'dir', 'max-connection-per-server'
-])
-.constant('\$globalTimeout', 1000)
-;
-
-EOF
-	else
-		old_host=`grep 'host:' $FILE_WEB_CONF | awk -F \' '{print $2}'`
-		old_port=`grep 'port:' $FILE_WEB_CONF | awk -F \' '{print $2}'`
-		[ "$old_host" != "$lan_ipaddr" ] && sed -i "s/\(host:\).*/\1\ \'$lan_ipaddr\'\,/" $FILE_WEB_CONF
-		[ "$old_port" != "$aria_rport" ] && sed -i "s/\(port:\).*/\1\ \'$aria_rport\'\,/" $FILE_WEB_CONF
-	fi
+if [ -f "$FILE_CONF_storage" ] && [ -s "$FILE_CONF_storage" ] ; then
+	umount -l $FILE_CONF
+	[ -f "$FILE_CONF" ] && rm -f $FILE_CONF
+	cp -f $FILE_CONF_storage $FILE_CONF
+	mount --bind $FILE_CONF_storage $FILE_CONF
+fi
 
 	# aria2 needed home dir
-	export HOME="$DIR_CFG"
+	export HOME="$DIR_LINK"
 
 	svc_user=""
 
 	if [ $SVC_ROOT -eq 0 ] ; then
 		chmod 777 "${DIR_LINK}"
-		chown -R nobody "$DIR_CFG"
+		chown -R nobody "$DIR_LINK"
 		svc_user=" -c nobody"
 	fi
 
 	start-stop-daemon -S -N $SVC_PRIORITY$svc_user -x $SVC_PATH -- \
-		-D --enable-rpc=true --conf-path="$FILE_CONF" --input-file="$FILE_LIST" --save-session="$FILE_LIST" \
+		-D --conf-path="$FILE_CONF" --input-file="$FILE_LIST" --save-session="$FILE_LIST" \
 		--rpc-listen-port="$aria_rport" --listen-port="$aria_pport" --dht-listen-port="$aria_pport"
 
 	if [ $? -eq 0 ] ; then
@@ -237,3 +169,4 @@ restart)
 	exit 1
 	;;
 esac
+
